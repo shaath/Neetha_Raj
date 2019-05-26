@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="GridSuite" parallel="none">
+  <test name="GridTest1">
+  <parameter name="br" value="firefox"/>
+  <parameter name="pt" value="windows"/>
+    <classes>
+      <class name="grid.GridEg"/>
+    </classes>
+  </test> <!-- GridTest -->
+  
+   <test name="GridTest1">
+  <parameter name="br" value="chrome"/>
+  <parameter name="pt" value="windows"/>
+    <classes>
+      <class name="grid.GridEg"/>
+    </classes>
+  </test> <!-- GridTest -->
+  
+  
+</suite> <!-- GridSuite -->

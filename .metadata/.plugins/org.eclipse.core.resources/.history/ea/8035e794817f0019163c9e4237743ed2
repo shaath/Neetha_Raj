@@ -1,0 +1,41 @@
+package grid;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.openqa.selenium.Platform;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
+
+public class GridEg 
+{
+	@Parameters({"br","pt"})
+	@Test
+	public void grid(String b,String p) throws MalformedURLException
+	{
+		DesiredCapabilities cap=new DesiredCapabilities();
+		if (b.equalsIgnoreCase("firefox") & p.equalsIgnoreCase("windows"))
+		{
+			cap=DesiredCapabilities.firefox();
+			cap.setPlatform(Platform.WINDOWS);
+		}
+		else if (b.equalsIgnoreCase("chrome") & p.equalsIgnoreCase("windows")) 
+		{
+			cap=DesiredCapabilities.chrome();
+			cap.setPlatform(Platform.WINDOWS);
+		}
+		
+//		DesiredCapabilities cap=DesiredCapabilities.firefox();
+//		cap.setPlatform(Platform.WINDOWS);
+		
+//		DesiredCapabilities cap=DesiredCapabilities.chrome();
+//		cap.setPlatform(Platform.WINDOWS);
+		
+		WebDriver driver=new RemoteWebDriver(new URL("http://192.168.0.4:4444/wd/hub"), cap);
+		
+	}
+
+}

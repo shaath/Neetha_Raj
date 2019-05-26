@@ -1,0 +1,81 @@
+package driverScripts;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import methods.OrgHRMLib;
+
+public class KeyWord {
+
+	public static void main(String[] args) throws IOException, InterruptedException 
+	{
+		OrgHRMLib om=new OrgHRMLib();
+		String res=null;
+		String xlPath="F:\\Neetha_RajRecordings\\Workspace\\Selenium_Project\\src\\testdata\\Keyword.xlsx";
+
+		FileInputStream fi=new FileInputStream(xlPath);
+		
+		XSSFWorkbook wb=new XSSFWorkbook(fi);
+		XSSFSheet TC_Sht=wb.getSheet("Testcase");
+		XSSFSheet TS_Sht=wb.getSheet("Teststeps");
+		XSSFSheet TD_Sht=wb.getSheet("TestData");
+		
+		int TC_RC=TC_Sht.getLastRowNum();
+		int TS_RC=TS_Sht.getLastRowNum();
+		
+		for (int i = 1; i <= TC_RC ; i++) 
+		{
+			String Exe=TC_Sht.getRow(i).getCell(2).getStringCellValue();
+			if (Exe.equalsIgnoreCase("Y"))
+			{
+				String TC_Sht_TC_ID=TC_Sht.getRow(i).getCell(0).getStringCellValue();
+				
+				for (int j = 1; j <= TS_RC; j++) 
+				{
+					String TS_Sht_TC_ID=TS_Sht.getRow(j).getCell(0).getStringCellValue();
+					
+					if (TC_Sht_TC_ID.equalsIgnoreCase(TS_Sht_TC_ID)) 
+					{
+						String key=TS_Sht.getRow(j).getCell(3).getStringCellValue();
+						
+						switch (key) 
+						{
+						case "Launch":
+							String br=TD_Sht.getRow(1).getCell(0).getStringCellValue();
+							String url=TD_Sht.getRow(1).getCell(1).getStringCellValue();
+							res=om.Org_Launch(br, url);
+							break;
+						case "login":
+							String u=TD_Sht.getRow(1).getCell(2).getStringCellValue();
+							String p=TD_Sht.getRow(1).getCell(3).getStringCellValue();
+							res=om.Org_Login(u, p);
+							break;
+						case "logout":
+							res=om.Org_Logout();
+							om.Org_Close();
+							break;
+						case "Empreg":
+							String f=TD_Sht.getRow(1).getCell(4).getStringCellValue();
+							String l=TD_Sht.getRow(1).getCell(5).getStringCellValue();
+							String Eid=TD_Sht.getRow(1).getCell(6).getStringCellValue();
+							res=om.Org_EmpReg(f, l, Eid);
+							break;
+							
+						default:
+							break;
+						}
+					}
+				}
+			}
+			else
+			{
+				TC_Sht.getRow(i).createCell(3).setCellValue("BLOCKED");
+			}
+		}
+	}
+
+}
